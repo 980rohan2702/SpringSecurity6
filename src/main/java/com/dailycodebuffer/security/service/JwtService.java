@@ -1,6 +1,6 @@
-package com.loginApp.spring_security_6.service;
+package com.dailycodebuffer.security.service;
 
-import com.loginApp.spring_security_6.entity.User;
+import com.dailycodebuffer.security.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -16,9 +16,12 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+
     private String secretKey = null;
+
     public String generateToken(User user) {
-        Map<String,Object> claims = new HashMap<>();
+        Map<String, Object> claims
+                = new HashMap<>();
         return Jwts
                 .builder()
                 .claims()
@@ -31,17 +34,21 @@ public class JwtService {
                 .signWith(generateKey())
                 .compact();
     }
-    private SecretKey generateKey(){
-        byte[] decode = Decoders.BASE64.decode(getSecretKey());
+
+    private SecretKey generateKey() {
+        byte[] decode
+                = Decoders.BASE64.decode(getSecretKey());
+
         return Keys.hmacShaKeyFor(decode);
     }
-    private String getSecretKey(){
-        secretKey = "XZzB6hX+uM3Z5G4LtGpGrzMT7+3L6EZ+PYStWnhcdpE=";
-        return secretKey;
+
+
+    public String getSecretKey() {
+        return secretKey = "RqxPOuVfHoBA8Uq40MhJvfY6qEHOOWWvg6N9W9vt23s=";
     }
 
     public String extractUserName(String token) {
-        return extractClaims(token , Claims::getSubject);
+        return extractClaims(token, Claims::getSubject);
     }
 
     private <T> T extractClaims(String token, Function<Claims,T> claimResolver) {
@@ -68,6 +75,6 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaims(token,Claims::getExpiration);
+        return extractClaims(token, Claims::getExpiration);
     }
 }
